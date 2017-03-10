@@ -31,16 +31,30 @@ $.gulp.task( 'browserSync', function( cb ) {
 
 
 /*******************************
+ * Scss Task
+ *******************************/
+$.gulp.task( 'scss', function() {
+  $.gulp.src('./styles.scss')
+      .pipe( $.gp.sourcemaps.init() )
+      .pipe( $.gp.sass()).on('error', $.gp.notify.onError({ title: 'Sass' }) )
+      .pipe( $.gp.autoprefixer({ browsers: ['last 3 version', '> 1%', 'ie 8', 'ie 9', 'Opera 12.1'] }) )
+      .pipe( $.gp.rename( 'style.css' ) )
+      .pipe( $.gp.sourcemaps.write( '.' ) )
+      .pipe( $.gulp.dest( '.' ) )
+      .pipe( $.browserSync.stream() );
+} );
+
+/*******************************
  * Scripts Task
  *******************************/
 $.gulp.task( 'scripts', function() {
   $.gulp.src('src/js/app.js')
-      .pipe( $.gp.plumber({errorHandler: $.onError}) )
-      .pipe( $.gp.browserify() )
-      .pipe( $.gp.babel({
-        presets: ['es2015']
-      }) )
-      .pipe( $.gulp.dest('./dist/js') );
+    .pipe( $.gp.plumber({errorHandler: $.onError}) )
+    .pipe( $.gp.browserify() )
+    .pipe( $.gp.babel({
+      presets: ['es2015']
+    }) )
+    .pipe( $.gulp.dest('./dist/js') );
 } );
 
 
@@ -49,10 +63,12 @@ $.gulp.task( 'scripts', function() {
  *******************************/
 $.gulp.task( 'watch', ['scripts'], function () {
   $.gulp.watch('./src/js/**/*.js', ['scripts', $.browserSync.reload]);
+  $.gulp.watch('./*.scss', ['scss', $.browserSync.reload]);
+  $.gulp.watch('./index.html', [$.browserSync.reload]);
 });
 
 
 /*******************************
  * Default Task
  *******************************/
-$.gulp.task( 'default', ['scripts', 'browserSync', 'watch'] );
+$.gulp.task( 'default', ['scripts', 'scss', 'browserSync', 'watch'] );

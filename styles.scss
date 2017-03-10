@@ -1,0 +1,9 @@
+@import "bower_components/bourbon5/core/_bourbon.scss";
+@import "bower_components/neat/core/_neat.scss";
+@import "bower_components/normalize-scss/sass/_normalize.scss";
+@import "bower_components/bitters/core/_base.scss";
+
+button {
+  text-transform: uppercase;
+  font-weight: 400;
+}
