@@ -3,7 +3,26 @@
 @import "bower_components/normalize-scss/sass/_normalize.scss";
 @import "bower_components/bitters/core/_base.scss";
 
+body {
+  margin: 0;
+}
+
 button {
   text-transform: uppercase;
   font-weight: 400;
+}
+
+.controls-panel {
+  @include size(100%, 80px);
+  padding: 20px;
+  background: #2CC990;
+}
+
+.div-container {
+  @include size(100%, calc(100% - 80px) );
+  position: relative;
+}
+
+.floatingDiv {
+  position: absolute;
 }

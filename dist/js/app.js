@@ -13,20 +13,77 @@
         s(r[o]);
     }return s;
 })({ 1: [function (require, module, exports) {
-        var app = require("./func.js");
+        var randomMethods = require('./randomMethods.js');
 
-        app.consoleRec(['я', 'умею', 'писать', 'рекурсивные', 'функции'], 0);
-    }, { "./func.js": 2 }], 2: [function (require, module, exports) {
-        var consoleRec = function consoleRec(array, cnt) {
-            var arrayLength = array.length;
+        var floatingDivCnt = 0;
 
-            console.log(array[cnt]);
-            cnt++;
+        function addFloatingDiv() {
+            if (document.querySelectorAll('.floatingDiv').length) floatingDivCnt++;
+            var div = document.createElement('div');
+            div.classList.add('floatingDiv', 'floatingDiv' + floatingDivCnt);
+            div.id = 'floatingDiv';
+            div.style.top = randomMethods.getRandomDivCoords().coordY + 'px';
+            div.style.left = randomMethods.getRandomDivCoords().coordX + 'px';
+            div.style.width = randomMethods.getRandomDivSizes().randomWidth + 'px';
+            div.style.height = randomMethods.getRandomDivSizes().randomHeight + 'px';
+            div.style.background = randomMethods.getRandomColor();
 
-            if (arrayLength > cnt) {
-                consoleRec(array, cnt);
-            }
+            document.querySelector('.div-container').appendChild(div);
+            console.log(div.classList);
         };
 
-        module.exports = { consoleRec: consoleRec };
-    }, {}] }, {}, [1]);
+        function removeFloatingDivs() {
+            var floatingDivs = document.querySelectorAll('.floatingDiv');
+            if (floatingDivs) {
+                floatingDivs.forEach(function (div) {
+                    div.remove();
+                });
+            }
+        }
+
+        module.exports = { addFloatingDiv: addFloatingDiv, removeFloatingDivs: removeFloatingDivs };
+    }, { "./randomMethods.js": 3 }], 2: [function (require, module, exports) {
+        var divManipulations = require('./divManipulations.js');
+
+        document.querySelector('#addDiv').addEventListener('click', function () {
+            return divManipulations.addFloatingDiv();
+        });
+        document.querySelector('#removeDivs').addEventListener('click', function () {
+            return divManipulations.removeFloatingDivs();
+        });
+    }, { "./divManipulations.js": 1 }], 3: [function (require, module, exports) {
+        function getRandomInteger(min, max) {
+            var rand = min + Math.random() * (max + 1 - min);
+            rand = Math.floor(rand);
+            return rand;
+        }
+
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        var getRandomDivSizes = function getRandomDivSizes() {
+            var windowWidth = window.innerWidth;
+            var windowHeight = window.innerHeight;
+            return {
+                randomWidth: getRandomInteger(1, windowWidth / 2),
+                randomHeight: getRandomInteger(1, windowHeight / 2)
+            };
+        };
+
+        var getRandomDivCoords = function getRandomDivCoords() {
+            var windowWidth = window.innerWidth;
+            var windowHeight = window.innerHeight;
+            return {
+                coordX: getRandomInteger(0, windowWidth),
+                coordY: getRandomInteger(0, windowHeight)
+            };
+        };
+
+        module.exports = { getRandomColor: getRandomColor, getRandomDivSizes: getRandomDivSizes, getRandomDivCoords: getRandomDivCoords };
+    }, {}] }, {}, [2]);

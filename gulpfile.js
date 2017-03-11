@@ -54,7 +54,8 @@ $.gulp.task( 'scripts', function() {
     .pipe( $.gp.babel({
       presets: ['es2015']
     }) )
-    .pipe( $.gulp.dest('./dist/js') );
+    .pipe( $.gulp.dest('./dist/js') )
+    .pipe( $.browserSync.stream() );
 } );
 
 

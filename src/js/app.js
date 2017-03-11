@@ -1,3 +1,4 @@
-const app = require("./func.js");
+const   divManipulations    = require('./divManipulations.js');
 
-app.consoleRec( ['я', 'умею', 'писать', 'рекурсивные', 'функции'], 0 );
+document.querySelector('#addDiv').addEventListener('click', () => divManipulations.addFloatingDiv() );
+document.querySelector('#removeDivs').addEventListener('click', () => divManipulations.removeFloatingDivs() );
