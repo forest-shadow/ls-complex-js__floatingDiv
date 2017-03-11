@@ -1,4 +1,5 @@
-const randomMethods       = require('./randomMethods.js');
+const   randomMethods           = require('./randomMethods.js'),
+        mouseEventsCallbacks    = require('./mouseEventsCallbacks');
 
 let floatingDivCnt = 0;
 
@@ -15,7 +16,8 @@ function addFloatingDiv () {
     div.style.background = randomMethods.getRandomColor();
 
     document.querySelector('.div-container').appendChild(div);
-    console.log(div.classList);
+    div.addEventListener('mousedown', mouseEventsCallbacks.mDown);
+    div.addEventListener('mouseup', mouseEventsCallbacks.mUp);
 };
 
 function removeFloatingDivs() {

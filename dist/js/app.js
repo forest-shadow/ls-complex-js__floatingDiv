@@ -13,7 +13,8 @@
         s(r[o]);
     }return s;
 })({ 1: [function (require, module, exports) {
-        var randomMethods = require('./randomMethods.js');
+        var randomMethods = require('./randomMethods.js'),
+            mouseEventsCallbacks = require('./mouseEventsCallbacks');
 
         var floatingDivCnt = 0;
 
@@ -29,7 +30,8 @@
             div.style.background = randomMethods.getRandomColor();
 
             document.querySelector('.div-container').appendChild(div);
-            console.log(div.classList);
+            div.addEventListener('mousedown', mouseEventsCallbacks.mDown);
+            div.addEventListener('mouseup', mouseEventsCallbacks.mUp);
         };
 
         function removeFloatingDivs() {
@@ -42,8 +44,9 @@
         }
 
         module.exports = { addFloatingDiv: addFloatingDiv, removeFloatingDivs: removeFloatingDivs };
-    }, { "./randomMethods.js": 3 }], 2: [function (require, module, exports) {
-        var divManipulations = require('./divManipulations.js');
+    }, { "./mouseEventsCallbacks": 3, "./randomMethods.js": 4 }], 2: [function (require, module, exports) {
+        var divManipulations = require('./divManipulations.js'),
+            mouseEventsCallbacks = require('./mouseEventsCallbacks');
 
         document.querySelector('#addDiv').addEventListener('click', function () {
             return divManipulations.addFloatingDiv();
@@ -51,7 +54,35 @@
         document.querySelector('#removeDivs').addEventListener('click', function () {
             return divManipulations.removeFloatingDivs();
         });
-    }, { "./divManipulations.js": 1 }], 3: [function (require, module, exports) {
+        document.addEventListener('mousemove', mouseEventsCallbacks.mMove);
+    }, { "./divManipulations.js": 1, "./mouseEventsCallbacks": 3 }], 3: [function (require, module, exports) {
+        var activeElement = void 0;
+        var offsetX = 0,
+            offsetY = 0,
+            layerX = 0,
+            layerY = 0;
+
+        var mDown = function mDown(e) {
+            console.log('mouse click');
+            activeElement = e.target;
+            offsetX = e.offsetX;
+            offsetY = e.offsetY;
+            layerX = e.layerX;
+            layerY = e.layerY;
+        };
+        var mUp = function mUp(e) {
+            console.log('mouse keydown');
+            activeElement = null;
+        };
+        var mMove = function mMove(e) {
+            console.log('moving cursor', e);
+            if (activeElement) {
+                activeElement.style.top = e.clientY - layerY + 'px';
+                activeElement.style.left = e.clientX - layerX + 'px';
+            }
+        };
+        module.exports = { mDown: mDown, mUp: mUp, mMove: mMove };
+    }, {}], 4: [function (require, module, exports) {
         function getRandomInteger(min, max) {
             var rand = min + Math.random() * (max + 1 - min);
             rand = Math.floor(rand);

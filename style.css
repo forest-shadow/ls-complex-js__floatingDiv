@@ -213,8 +213,7 @@ button {
 
 .div-container {
   height: calc(100% - 80px);
-  width: 100%;
-  position: relative; }
+  width: 100%; }
 
 .floatingDiv {
   position: absolute; }
